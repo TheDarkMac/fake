@@ -1,5 +1,7 @@
 <?php
 
-class Goal{
+namespace Src;
+class Goal
+{
     private string $id;
 }
