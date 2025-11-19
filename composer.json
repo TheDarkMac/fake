@@ -1,0 +1,15 @@
+{
+    "name": "icecream/php2",
+    "autoload": {
+        "psr-4": {
+            "Icecream\\Php2\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ando Mamy",
+            "email": "hei.ando.14@gmail.com"
+        }
+    ],
+    "require": {}
+}
