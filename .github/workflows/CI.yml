@@ -1,29 +1,50 @@
-name: "CI"
+name: "CI - PHPCS"
 
 on:
   push:
-    paths:
-      - "**.php"
-      - "phpcs.xml"
-      - ".github/workflows/phpcs.yml"
+    branches:
+      - "*"        # déclenche sur tous les pushes
+  pull_request:
+    branches:
+      - "*"        # déclenche sur toutes les PRs
 
 jobs:
   phpcs:
+    name: "PHPCS Check"
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 
 
-      - name: Install PHP_CodeSniffer
+    steps:
+      # 1️⃣ Checkout du code
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2️⃣ Installer PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'  # à adapter selon ton projet
+          tools: composer
+
+      # 3️⃣ Installer les dépendances du projet si nécessaire
+      - name: Install dependencies
+        run: composer install --ignore-platform-reqs
+
+      # 4️⃣ Installer PHPCS si pas dans composer
+      - name: Install PHPCS (phar fallback)
         run: |
-          curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+          if [ ! -f phpcs.phar ]; then
+            curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar
+          fi
           php phpcs.phar --version
 
-      - uses: thenabeel/action-phpcs@v8
-        with:
-          files: "src/**/*.php"
-          phpcs_path: phpcs.phar
-          standard: phpcs.xml
-          fail_on_warnings: true
-          scope: all
+      # 5️⃣ Lancer PHPCS sur src/ avec ton phpcs.xml
+      - name: Run PHPCS
+        run: |
+          # utiliser le binaire composer si disponible, sinon phar
+          if [ -f vendor/bin/phpcs ]; then
+            vendor/bin/phpcs --standard=phpcs.xml src/
+          else
+            php phpcs.phar --standard=phpcs.xml src/
+          fi
