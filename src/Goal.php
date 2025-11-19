@@ -1,5 +1,5 @@
 <?php
 
 class Goal{
-    public string $id;
+    private string $i;
 }
