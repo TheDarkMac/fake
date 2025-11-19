@@ -1,7 +1,7 @@
 name: "CI"
 
 on:
-  pull_request:
+  push:
     paths:
       - "**.php"
       - "phpcs.xml"
@@ -23,5 +23,5 @@ jobs:
       - uses: thenabeel/action-phpcs@v8
         with:
           files: "**.php" 
-          phpcs_path: php phpcs.phar
+          phpcs_path: phpcs.phar
           standard: phpcs.xml
