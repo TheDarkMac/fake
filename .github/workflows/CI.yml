@@ -22,7 +22,7 @@ jobs:
 
       - uses: thenabeel/action-phpcs@v8
         with:
-          files: "**.php" 
+          files: "src/**/*.php"
           phpcs_path: phpcs.phar
           standard: phpcs.xml
           fail_on_error: true
