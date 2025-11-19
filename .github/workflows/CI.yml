@@ -25,4 +25,5 @@ jobs:
           files: "src/**/*.php"
           phpcs_path: phpcs.phar
           standard: phpcs.xml
-          fail_on_error: true
+          fail_on_warnings: true
+          scope: all
